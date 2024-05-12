@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final appController = Get.find<AppController>();
-  final playerController = Get.find<PlayerController>()..getSongs();
+  final playerController = Get.find<PlayerController>();
 
   @override
   Widget build(BuildContext context) {

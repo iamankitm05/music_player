@@ -11,12 +11,12 @@ import 'package:on_audio_query/on_audio_query.dart';
 class SelectedSongTile extends StatelessWidget {
   SelectedSongTile({super.key});
 
-  final playerController = Get.find<PlayerController>();
+  final _playerController = Get.find<PlayerController>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final song = playerController.selectedSong.value;
+      final song = _playerController.selectedSong.value;
       if (song == null) {
         return const Gap(0);
       }
@@ -56,21 +56,35 @@ class SelectedSongTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: _playerController.selectPreviousSong,
               icon: const Icon(
                 Icons.skip_previous_rounded,
                 color: AppColors.white,
               ),
             ),
+            StreamBuilder(
+                stream: _playerController.getPlayerStateStream(),
+                builder: (context, snapshot) {
+                  final playerState = snapshot.data;
+                  final isPlaying = playerState?.playing ?? false;
+                  return IconButton(
+                    onPressed: () {
+                      if (isPlaying) {
+                        _playerController.pause();
+                      } else {
+                        _playerController.play();
+                      }
+                    },
+                    icon: Icon(
+                      isPlaying
+                          ? Icons.pause_rounded
+                          : Icons.play_arrow_rounded,
+                      color: AppColors.white,
+                    ),
+                  );
+                }),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.play_arrow_rounded,
-                color: AppColors.white,
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
+              onPressed: _playerController.selectNextSong,
               icon: const Icon(
                 Icons.skip_next_rounded,
                 color: AppColors.white,

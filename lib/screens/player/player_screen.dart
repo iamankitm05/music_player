@@ -55,17 +55,38 @@ class PlayerScreen extends StatelessWidget {
                 style: AppTypography.extraLight13,
               ),
               const Spacer(),
-              LoadingAnimationWidget.beat(
-                size: 30,
-                color: Theme.of(context).primaryColor,
-              ),
+              StreamBuilder(
+                  stream: _playerController.getPlayerStateStream(),
+                  builder: (context, snapshot) {
+                    final playerState = snapshot.data;
+                    final isPlaying = playerState?.playing ?? false;
+                    if (isPlaying) {
+                      return LoadingAnimationWidget.beat(
+                        size: 30,
+                        color: Theme.of(context).primaryColor,
+                      );
+                    } else {
+                      return const Gap(0);
+                    }
+                  }),
               const Spacer(),
-              ProgressBar(
-                progress: const Duration(milliseconds: 1000),
-                buffered: const Duration(milliseconds: 2000),
-                total: const Duration(milliseconds: 5000),
-                onSeek: (duration) {},
-              ),
+              StreamBuilder(
+                  stream: _playerController.getPlayerPositionDataStream(),
+                  builder: (context, snapshot) {
+                    final playerPositionData = snapshot.data;
+                    final position =
+                        playerPositionData?.position ?? Duration.zero;
+                    final bufferedPosition =
+                        playerPositionData?.bufferedPosition ?? Duration.zero;
+                    final duration =
+                        playerPositionData?.duration ?? Duration.zero;
+                    return ProgressBar(
+                      progress: position,
+                      buffered: bufferedPosition,
+                      total: duration,
+                      onSeek: _playerController.seek,
+                    );
+                  }),
               const Gap(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,35 +97,47 @@ class PlayerScreen extends StatelessWidget {
                       final shuffleingOn = _playerController.shuffleingOn.value;
                       return Icon(
                         Icons.shuffle,
-                        color: shuffleingOn ? AppColors.white : AppColors.grey,
+                        color: shuffleingOn ? null : AppColors.grey,
                         size: shuffleingOn ? 22 : 18,
                       );
                     }),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _playerController.selectPreviousSong,
                     icon: const Icon(
                       Icons.skip_previous_rounded,
-                      color: AppColors.white,
                       size: 40,
                     ),
                   ),
+                  StreamBuilder(
+                      stream: _playerController.getPlayerStateStream(),
+                      builder: (context, snapshot) {
+                        final playerState = snapshot.data;
+                        final isPlaying = playerState?.playing ?? false;
+                        return IconButton(
+                          onPressed: () {
+                            if (isPlaying) {
+                              _playerController.pause();
+                            } else {
+                              _playerController.play();
+                            }
+                          },
+                          style: IconButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: AppColors.white,
+                          ),
+                          icon: Icon(
+                            isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                            size: 40,
+                          ),
+                        );
+                      }),
                   IconButton(
-                    onPressed: () {},
-                    style: IconButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: AppColors.white,
-                    ),
-                    icon: const Icon(
-                      Icons.play_arrow_rounded,
-                      size: 40,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
+                    onPressed: _playerController.selectNextSong,
                     icon: const Icon(
                       Icons.skip_next_rounded,
-                      color: AppColors.white,
                       size: 40,
                     ),
                   ),
@@ -115,13 +148,11 @@ class PlayerScreen extends StatelessWidget {
                       if (playMode == PlayMode.repeat) {
                         return const Icon(
                           Icons.repeat,
-                          color: AppColors.white,
                           size: 22,
                         );
                       } else if (playMode == PlayMode.single) {
                         return const Icon(
                           Icons.repeat_one,
-                          color: AppColors.white,
                           size: 22,
                         );
                       } else {

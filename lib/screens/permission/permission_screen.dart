@@ -5,6 +5,7 @@ import 'package:music_player/constants/app_colors.dart';
 import 'package:music_player/constants/app_typography.dart';
 import 'package:music_player/controllers/app_controller.dart';
 import 'package:music_player/controllers/player_controller.dart';
+import 'package:music_player/screens/settings/settings_screen.dart';
 
 class PermissionScreen extends StatelessWidget {
   PermissionScreen({super.key});
@@ -16,9 +17,17 @@ class PermissionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _appController.appName,
-          style: AppTypography.medium18,
+        title: Text(_appController.appName),
+        titleTextStyle: AppTypography.medium18,
+        leading: IconButton(
+          onPressed: () {
+            Get.to(
+              SettingsScreen(),
+              transition: Transition.downToUp,
+              duration: const Duration(microseconds: 500),
+            );
+          },
+          icon: const Icon(Icons.menu),
         ),
       ),
       body: Container(

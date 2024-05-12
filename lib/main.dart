@@ -10,6 +10,7 @@ import 'package:music_player/screens/permission/permission_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  Get.put(GetStorage());
   final appController = Get.put(AppController());
   await appController.init();
   final playerController = Get.put(PlayerController());
