@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:music_player/constants/app_colors.dart';
 import 'package:music_player/constants/app_typography.dart';
+import 'package:music_player/controllers/ad_controller.dart';
 import 'package:music_player/controllers/app_controller.dart';
 import 'package:music_player/controllers/player_controller.dart';
 import 'package:music_player/screens/settings/settings_screen.dart';
@@ -12,6 +14,7 @@ class PermissionScreen extends StatelessWidget {
 
   final _appController = Get.find<AppController>();
   final _playerController = Get.find<PlayerController>();
+  final _adController = Get.find<AdController>();
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +133,19 @@ class PermissionScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: Obx(() {
+        final permissionScreenBannerAd =
+            _adController.permissionScreenBannerAd.value;
+        if (permissionScreenBannerAd != null) {
+          return SizedBox(
+            height: 50,
+            child: AdWidget(
+              ad: permissionScreenBannerAd,
+            ),
+          );
+        }
+        return const SizedBox();
+      }),
     );
   }
 }

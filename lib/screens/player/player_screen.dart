@@ -2,9 +2,11 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/constants/app_colors.dart';
 import 'package:music_player/constants/app_typography.dart';
+import 'package:music_player/controllers/ad_controller.dart';
 import 'package:music_player/controllers/player_controller.dart';
 import 'package:music_player/screens/home/widgets/custom_query_artwork_widget.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -13,6 +15,7 @@ class PlayerScreen extends StatelessWidget {
   PlayerScreen({super.key});
 
   final _playerController = Get.find<PlayerController>();
+  final _adController = Get.find<AdController>();
 
   @override
   Widget build(BuildContext context) {
@@ -170,10 +173,18 @@ class PlayerScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: Colors.amber,
-      ),
+      bottomNavigationBar: Obx(() {
+        final playerScreenBannerAd = _adController.playerScreenBannerAd.value;
+        if (playerScreenBannerAd != null) {
+          return SizedBox(
+            height: 50,
+            child: AdWidget(
+              ad: playerScreenBannerAd,
+            ),
+          );
+        }
+        return const SizedBox();
+      }),
     );
   }
 }

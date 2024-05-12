@@ -8,7 +8,7 @@ import 'package:music_player/controllers/app_controller.dart';
 class ColorPickerDialog extends StatelessWidget {
   ColorPickerDialog({super.key});
 
-  final appController = Get.find<AppController>()..closeHomeScreenDrawer();
+  final _appController = Get.find<AppController>()..closeHomeScreenDrawer();
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class ColorPickerDialog extends StatelessWidget {
       content: SizedBox(
         height: 300,
         child: BlockPicker(
-          pickerColor: appController.primaryColor.value,
-          onColorChanged: appController.setPrimaryColor,
+          pickerColor: _appController.primaryColor.value,
+          onColorChanged: _appController.setPrimaryColor,
           itemBuilder: (color, isCurrentColor, changeColor) => Stack(
             alignment: Alignment.center,
             children: [

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:music_player/constants/app_typography.dart';
+import 'package:music_player/controllers/ad_controller.dart';
 import 'package:music_player/controllers/app_controller.dart';
 import 'package:music_player/screens/home/widgets/color_picker_dialog.dart';
 
@@ -10,6 +12,7 @@ class SettingsScreen extends StatelessWidget {
   SettingsScreen({super.key});
 
   final _appController = Get.find<AppController>();
+  final _adController = Get.find<AdController>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +93,19 @@ class SettingsScreen extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: Colors.amber,
-      ),
+      bottomNavigationBar: Obx(() {
+        final settingsScreenBannerAd =
+            _adController.settingsScreenBannerAd.value;
+        if (settingsScreenBannerAd != null) {
+          return SizedBox(
+            height: 50,
+            child: AdWidget(
+              ad: settingsScreenBannerAd,
+            ),
+          );
+        }
+        return const SizedBox();
+      }),
     );
   }
 }

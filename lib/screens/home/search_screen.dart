@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:music_player/constants/app_colors.dart';
 import 'package:music_player/constants/app_typography.dart';
+import 'package:music_player/controllers/ad_controller.dart';
 import 'package:music_player/controllers/player_controller.dart';
+import 'package:music_player/screens/home/widgets/selected_song_tile.dart';
 import 'package:music_player/screens/home/widgets/song_tile.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
 
-  final searchController = TextEditingController();
-  final playerController = Get.find<PlayerController>()..clearFilteredSongs();
+  final _searchController = TextEditingController();
+  final _playerController = Get.find<PlayerController>()..clearFilteredSongs();
+  final _adController = Get.find<AdController>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +25,8 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          controller: searchController,
-          onChanged: playerController.search,
+          controller: _searchController,
+          onChanged: _playerController.search,
           onTapOutside: (event) => FocusScope.of(context).unfocus(),
           style: AppTypography.extraLight16.copyWith(
             color: AppColors.white,
@@ -37,8 +41,8 @@ class SearchScreen extends StatelessWidget {
             enabledBorder: border,
             suffixIcon: IconButton(
               onPressed: () {
-                searchController.clear();
-                playerController.clearFilteredSongs();
+                _searchController.clear();
+                _playerController.clearFilteredSongs();
               },
               icon: const Icon(
                 Icons.clear,
@@ -53,19 +57,28 @@ class SearchScreen extends StatelessWidget {
           Expanded(
             child: Obx(() {
               return ListView.builder(
-                itemCount: playerController.filteredSongs.length,
+                itemCount: _playerController.filteredSongs.length,
                 itemBuilder: (context, index) {
-                  return SongTile(song: playerController.filteredSongs[index]);
+                  return SongTile(song: _playerController.filteredSongs[index]);
                 },
               );
             }),
-          )
+          ),
+          SelectedSongTile(),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: Colors.amber,
-      ),
+      bottomNavigationBar: Obx(() {
+        final searchScreenBannerAd = _adController.searchScreenBannerAd.value;
+        if (searchScreenBannerAd != null) {
+          return SizedBox(
+            height: 50,
+            child: AdWidget(
+              ad: searchScreenBannerAd,
+            ),
+          );
+        }
+        return const SizedBox();
+      }),
     );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:music_player/controllers/app_controller.dart';
+import 'package:music_player/controllers/ad_controller.dart';
 import 'package:music_player/controllers/player_controller.dart';
 import 'package:music_player/screens/home/widgets/home_screen_appbar.dart';
 import 'package:music_player/screens/home/widgets/selected_song_tile.dart';
@@ -10,8 +11,8 @@ import 'package:music_player/screens/home/widgets/song_tile.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  final appController = Get.find<AppController>();
-  final playerController = Get.find<PlayerController>();
+  final _playerController = Get.find<PlayerController>();
+  final _adController = Get.find<AdController>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
       appBar: const HomeScreenAppbar(),
       body: Obx(
         () {
-          if (playerController.isSongsLoading.value) {
+          if (_playerController.isSongsLoading.value) {
             return Center(
               child: LoadingAnimationWidget.fourRotatingDots(
                 size: 36,
@@ -29,14 +30,14 @@ class HomeScreen extends StatelessWidget {
           }
 
           return RefreshIndicator(
-            onRefresh: playerController.getSongs,
+            onRefresh: _playerController.getSongs,
             child: Column(
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: playerController.songs.length,
+                    itemCount: _playerController.songs.length,
                     itemBuilder: (context, index) =>
-                        SongTile(song: playerController.songs[index]),
+                        SongTile(song: _playerController.songs[index]),
                   ),
                 ),
                 SelectedSongTile(),
@@ -45,10 +46,18 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: Container(
-        height: 60,
-        color: Colors.amber,
-      ),
+      bottomNavigationBar: Obx(() {
+        final homeScreenBannerAd = _adController.homeScreenBannerAd.value;
+        if (homeScreenBannerAd != null) {
+          return SizedBox(
+            height: 50,
+            child: AdWidget(
+              ad: homeScreenBannerAd,
+            ),
+          );
+        }
+        return const SizedBox();
+      }),
     );
   }
 }

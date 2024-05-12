@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:get/get.dart';
@@ -27,7 +26,9 @@ class PlayerController extends GetxController {
 
   final filteredSongs = [].obs;
 
-  Future<void> init() async {
+  @override
+  Future<void> onInit() async {
+    super.onInit();
     final permissionsStatus = await getPermissionsStatus();
     if (permissionsStatus) {
       await getSongs();
@@ -47,6 +48,12 @@ class PlayerController extends GetxController {
     }
   }
 
+  @override
+  void onClose() {
+    _player.dispose();
+    _selectedSongStreamSubscription?.cancel();
+  }
+
   Future<bool> getPermissionsStatus() async {
     permissionsStatus.value = await _onAudioQuery.permissionsStatus();
     return permissionsStatus.value;
@@ -54,6 +61,9 @@ class PlayerController extends GetxController {
 
   Future<bool> permissionsRequest() async {
     permissionsStatus.value = await _onAudioQuery.permissionsRequest();
+    if (permissionsStatus.value) {
+      await getSongs();
+    }
     return permissionsStatus.value;
   }
 
@@ -98,17 +108,6 @@ class PlayerController extends GetxController {
 
   Future<void> seek(position) async {
     await _player.seek(position);
-  }
-
-  Future<void> deleteSong(SongModel song) async {
-    try {
-      final file = File(song.data);
-      await file.delete();
-      await getSongs();
-    } catch (e) {
-      print(":::::::::::::::::::::");
-      print(e);
-    }
   }
 
   Stream<PlayerState> getPlayerStateStream() {

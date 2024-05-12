@@ -8,7 +8,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 class AppController extends GetxController {
   final _storage = Get.find<GetStorage>();
 
-  Future<void> init() async {
+  @override
+  Future<void> onInit() async {
+    super.onInit();
     final primaryColorCode = _storage.read<int?>(AppConstants.primaryColorKey);
     if (primaryColorCode != null) {
       primaryColor = Color(primaryColorCode).obs;
