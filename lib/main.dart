@@ -12,8 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   Get.put(GetStorage());
-  await Get.putAsync(() async => AppController());
-  await Get.putAsync(() async => PlayerController());
+  final appController = Get.put(AppController());
+  await appController.init();
+  final playerController = Get.put(PlayerController());
+  await playerController.init();
   Get.put(AdController());
   runApp(MyApp());
 }

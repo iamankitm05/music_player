@@ -8,6 +8,7 @@ import 'package:music_player/constants/app_constants.dart';
 import 'package:music_player/models/player_position_data.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
+import 'package:permission_handler/permission_handler.dart';
 
 class PlayerController extends GetxController {
   final _storage = Get.find<GetStorage>();
@@ -26,9 +27,7 @@ class PlayerController extends GetxController {
 
   final filteredSongs = [].obs;
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
+  Future<void> init() async {
     final permissionsStatus = await getPermissionsStatus();
     if (permissionsStatus) {
       await getSongs();
@@ -55,16 +54,22 @@ class PlayerController extends GetxController {
   }
 
   Future<bool> getPermissionsStatus() async {
-    permissionsStatus.value = await _onAudioQuery.permissionsStatus();
-    return permissionsStatus.value;
+    final storagePermissionsStatus = await Permission.storage.status;
+    final isPermissionGranted =
+        storagePermissionsStatus.isGranted ? true : false;
+    permissionsStatus.value = isPermissionGranted;
+    return isPermissionGranted;
   }
 
-  Future<bool> permissionsRequest() async {
+  Future<void> permissionsRequest() async {
+    final storagePermissionsStatus = await Permission.storage.request();
     permissionsStatus.value = await _onAudioQuery.permissionsRequest();
-    if (permissionsStatus.value) {
+    final isPermissionGranted =
+        storagePermissionsStatus.isGranted ? true : false;
+    if (isPermissionGranted) {
+      permissionsStatus.value = true;
       await getSongs();
     }
-    return permissionsStatus.value;
   }
 
   Future<void> selectSong(SongModel? song) async {
