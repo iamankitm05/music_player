@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return Obx(
       () => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: _appController.appName,
+        title: 'Music Player',
         theme: AppThemes.lightTheme(_appController.primaryColor.value),
         darkTheme: AppThemes.darkTheme(_appController.primaryColor.value),
         themeMode: _appController.getThemeMode(),

@@ -136,7 +136,10 @@ class PermissionScreen extends StatelessWidget {
       bottomNavigationBar: Obx(() {
         final permissionScreenBannerAd =
             _adController.permissionScreenBannerAd.value;
-        if (permissionScreenBannerAd != null) {
+        final permissionScreenBannerAdLoaded =
+            _adController.permissionScreenBannerAdLoaded.value;
+        if (permissionScreenBannerAdLoaded &&
+            permissionScreenBannerAd != null) {
           return SizedBox(
             height: 50,
             child: AdWidget(

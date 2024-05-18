@@ -96,7 +96,9 @@ class SettingsScreen extends StatelessWidget {
       bottomNavigationBar: Obx(() {
         final settingsScreenBannerAd =
             _adController.settingsScreenBannerAd.value;
-        if (settingsScreenBannerAd != null) {
+        final settingsScreenBannerAdLoaded =
+            _adController.settingsScreenBannerAdLoaded.value;
+        if (settingsScreenBannerAdLoaded && settingsScreenBannerAd != null) {
           return SizedBox(
             height: 50,
             child: AdWidget(

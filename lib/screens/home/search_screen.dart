@@ -69,7 +69,9 @@ class SearchScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Obx(() {
         final searchScreenBannerAd = _adController.searchScreenBannerAd.value;
-        if (searchScreenBannerAd != null) {
+        final searchScreenBannerAdLoaded =
+            _adController.searchScreenBannerAdLoaded.value;
+        if (searchScreenBannerAdLoaded && searchScreenBannerAd != null) {
           return SizedBox(
             height: 50,
             child: AdWidget(

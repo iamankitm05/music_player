@@ -175,7 +175,9 @@ class PlayerScreen extends StatelessWidget {
       }),
       bottomNavigationBar: Obx(() {
         final playerScreenBannerAd = _adController.playerScreenBannerAd.value;
-        if (playerScreenBannerAd != null) {
+        final playerScreenBannerAdLoaded =
+            _adController.playerScreenBannerAdLoaded.value;
+        if (playerScreenBannerAdLoaded && playerScreenBannerAd != null) {
           return SizedBox(
             height: 50,
             child: AdWidget(

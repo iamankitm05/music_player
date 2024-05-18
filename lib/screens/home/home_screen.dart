@@ -48,7 +48,9 @@ class HomeScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Obx(() {
         final homeScreenBannerAd = _adController.homeScreenBannerAd.value;
-        if (homeScreenBannerAd != null) {
+        final homeScreenBannerAdLoaded =
+            _adController.homeScreenBannerAdLoaded.value;
+        if (homeScreenBannerAdLoaded && homeScreenBannerAd != null) {
           return SizedBox(
             height: 50,
             child: AdWidget(
