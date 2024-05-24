@@ -17,7 +17,7 @@ class AppController extends GetxController {
     }
 
     final themeStatus = _storage.read<bool?>(AppConstants.isDarkModeKey);
-    isDarkMode = RxBool(themeStatus ?? false);
+    isDarkMode.value = themeStatus ?? false;
 
     final packageInfo = await PackageInfo.fromPlatform();
     appName = packageInfo.appName;
@@ -25,7 +25,7 @@ class AppController extends GetxController {
     buildNumber = packageInfo.buildNumber;
   }
 
-  late final RxBool isDarkMode;
+  final RxBool isDarkMode = false.obs;
   late final Rx<Color> primaryColor;
   final homeScreenScaffoldKey = GlobalKey<ScaffoldState>();
   late final String appName;

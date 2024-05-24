@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:music_player/constants/app_constants.dart';
 import 'package:music_player/constants/app_themes.dart';
 import 'package:music_player/controllers/ad_controller.dart';
 import 'package:music_player/controllers/app_controller.dart';
@@ -11,7 +10,7 @@ import 'package:music_player/screens/permission/permission_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init(AppConstants.musicPlayerStorageKey);
+  await GetStorage.init();
   Get.put(GetStorage());
   final appController = Get.put(AppController());
   await appController.init();
