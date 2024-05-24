@@ -16,98 +16,140 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: Column(
-        children: [
-          const Gap(5),
-          ListTile(
-            title: Text(
-              'General',
-              style: AppTypography.light15.copyWith(
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text('Dark Theme'),
-            trailing: Obx(
-              () => SizedBox(
-                width: 40,
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Switch(
-                    value: _appController.isDarkMode.value,
-                    onChanged: (value) => _appController.toggleThemeMode(),
-                    thumbIcon: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return const Icon(Icons.dark_mode);
-                      }
-                      return const Icon(Icons.light_mode);
-                    }),
-                  ),
+    return Semantics(
+      label: 'Settings',
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Settings'),
+        ),
+        body: Column(
+          children: [
+            const Gap(5),
+            ListTile(
+              title: Text(
+                'General',
+                style: AppTypography.light15.copyWith(
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
-          ),
-          ListTile(
-            title: const Text('Primary Color'),
-            trailing: GestureDetector(
-              onTap: () => Get.dialog(ColorPickerDialog()),
-              child: Obx(
-                () => Padding(
-                  padding: const EdgeInsets.only(right: 2.5),
-                  child: ColorIndicator(
-                    HSVColor.fromColor(_appController.primaryColor.value),
-                    width: 35,
-                    height: 35,
+            Container(
+              height: 45,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Dark Theme',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                ),
+                  Obx(
+                    () {
+                      return Semantics(
+                      label: 'Toggle Theme',
+                      child: Switch(
+                        value: _appController.isDarkMode.value,
+                        onChanged: (value) => _appController.toggleThemeMode(),
+                        thumbIcon: WidgetStateProperty.resolveWith((states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return const Icon(Icons.dark_mode);
+                          }
+                          return const Icon(Icons.light_mode);
+                        }),
+                      ),
+                    );
+                    },
+                  ),
+                ],
               ),
             ),
-          ),
-          AboutListTile(
-            applicationName: _appController.appName,
-            applicationLegalese:
-                'Version: ${_appController.version}\nBuild Number: ${_appController.buildNumber}\nDeveloped by Ankit kumar',
-          ),
-          ListTile(
-            onTap: () => showLicensePage(
-              context: context,
+            const Gap(15),
+            Container(
+              height: 45,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Primary Color',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Obx(
+                    () {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: Semantics(
+                          label: 'Select Theme Primary Color',
+                          child: GestureDetector(
+                            onTap: () => Get.dialog(ColorPickerDialog()),
+                            child: FittedBox(
+                              child: ColorIndicator(
+                                HSVColor.fromColor(_appController.primaryColor.value),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            title: const Text('Licenses'),
-          ),
-          const Spacer(),
-          ListTile(
-            title: Text(
-              _appController.appName,
-              textAlign: TextAlign.center,
+            const Gap(10),
+            Semantics(
+              label: 'About App',
+              child: AboutListTile(
+                applicationName: _appController.appName,
+                applicationLegalese:
+                    'Version: ${_appController.version}\nBuild Number: ${_appController.buildNumber}\nDeveloped by Ankit kumar',
+              ),
             ),
-            subtitle: Text(
-              _appController.version,
-              textAlign: TextAlign.center,
+            const Gap(10),
+            Semantics(
+              label: 'Licenses',
+              child: ListTile(
+                onTap: () => showLicensePage(
+                  context: context,
+                ),
+                title: const Text('Licenses'),
+              ),
             ),
-            titleAlignment: ListTileTitleAlignment.center,
-          )
-        ],
+            const Spacer(),
+            ListTile(
+              title: Text(
+                _appController.appName,
+                textAlign: TextAlign.center,
+              ),
+              subtitle: Text(
+                _appController.version,
+                textAlign: TextAlign.center,
+              ),
+              titleAlignment: ListTileTitleAlignment.center,
+            )
+          ],
+        ),
+        bottomNavigationBar: Obx(() {
+          final settingsScreenBannerAd =
+              _adController.settingsScreenBannerAd.value;
+          final settingsScreenBannerAdLoaded =
+              _adController.settingsScreenBannerAdLoaded.value;
+          if (settingsScreenBannerAdLoaded && settingsScreenBannerAd != null) {
+            return SizedBox(
+              height: 50,
+              child: AdWidget(
+                ad: settingsScreenBannerAd,
+              ),
+            );
+          }
+          return const SizedBox();
+        }),
       ),
-      bottomNavigationBar: Obx(() {
-        final settingsScreenBannerAd =
-            _adController.settingsScreenBannerAd.value;
-        final settingsScreenBannerAdLoaded =
-            _adController.settingsScreenBannerAdLoaded.value;
-        if (settingsScreenBannerAdLoaded && settingsScreenBannerAd != null) {
-          return SizedBox(
-            height: 50,
-            child: AdWidget(
-              ad: settingsScreenBannerAd,
-            ),
-          );
-        }
-        return const SizedBox();
-      }),
     );
   }
 }

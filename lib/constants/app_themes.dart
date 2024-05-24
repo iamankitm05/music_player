@@ -36,9 +36,9 @@ abstract final class AppThemes {
       );
 
   static getSwitchThemeData(Color primary) => SwitchThemeData(
-        trackColor: MaterialStateProperty.all(primary.withOpacity(0.4)),
-        thumbColor: MaterialStatePropertyAll(primary),
-        trackOutlineColor: MaterialStatePropertyAll(primary.withOpacity(0.4)),
+        trackColor: WidgetStateProperty.all(primary.withAlpha(150)),
+        thumbColor: WidgetStatePropertyAll(primary),
+        trackOutlineColor: WidgetStatePropertyAll(primary.withAlpha(150)),
       );
 
   static ElevatedButtonThemeData getElevatedButtonThemeData(Color primary) =>

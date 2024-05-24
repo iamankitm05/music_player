@@ -8,7 +8,6 @@ import 'package:music_player/constants/app_constants.dart';
 import 'package:music_player/models/player_position_data.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
-import 'package:permission_handler/permission_handler.dart';
 
 class PlayerController extends GetxController {
   final _storage = Get.find<GetStorage>();
@@ -54,20 +53,13 @@ class PlayerController extends GetxController {
   }
 
   Future<bool> getPermissionsStatus() async {
-    final storagePermissionsStatus = await Permission.storage.status;
-    final isPermissionGranted =
-        storagePermissionsStatus.isGranted ? true : false;
-    permissionsStatus.value = isPermissionGranted;
-    return isPermissionGranted;
+    permissionsStatus.value = await _onAudioQuery.permissionsStatus();
+    return permissionsStatus.value;
   }
 
   Future<void> permissionsRequest() async {
-    final storagePermissionsStatus = await Permission.storage.request();
     permissionsStatus.value = await _onAudioQuery.permissionsRequest();
-    final isPermissionGranted =
-        storagePermissionsStatus.isGranted ? true : false;
-    if (isPermissionGranted) {
-      permissionsStatus.value = true;
+    if (permissionsStatus.value) {
       await getSongs();
     }
   }

@@ -22,65 +22,72 @@ class SearchScreen extends StatelessWidget {
         color: AppColors.white,
       ),
     );
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          onChanged: _playerController.search,
-          onTapOutside: (event) => FocusScope.of(context).unfocus(),
-          style: AppTypography.extraLight16.copyWith(
-            color: AppColors.white,
-          ),
-          decoration: InputDecoration(
-            hintText: 'Search',
-            hintStyle: AppTypography.light15.copyWith(
-              color: AppColors.white.withOpacity(0.5),
+    return Semantics(
+      label: 'Search Screen',
+      child: Scaffold(
+        appBar: AppBar(
+          title: TextField(
+            controller: _searchController,
+            onChanged: _playerController.search,
+            onTapOutside: (event) => FocusScope.of(context).unfocus(),
+            style: AppTypography.extraLight16.copyWith(
+              color: AppColors.white,
             ),
-            border: border,
-            focusedBorder: border,
-            enabledBorder: border,
-            suffixIcon: IconButton(
-              onPressed: () {
-                _searchController.clear();
-                _playerController.clearFilteredSongs();
-              },
-              icon: const Icon(
-                Icons.clear,
-                color: AppColors.white,
+            decoration: InputDecoration(
+              hintText: 'Search',
+              hintStyle: AppTypography.light15.copyWith(
+                color: AppColors.white.withOpacity(0.5),
+              ),
+              border: border,
+              focusedBorder: border,
+              enabledBorder: border,
+              suffixIcon: Semantics(
+                label: 'Clear Filter',
+                child: IconButton(
+                  onPressed: () {
+                    _searchController.clear();
+                    _playerController.clearFilteredSongs();
+                  },
+                  icon: const Icon(
+                    Icons.clear,
+                    color: AppColors.white,
+                  ),
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Obx(() {
-              return ListView.builder(
-                itemCount: _playerController.filteredSongs.length,
-                itemBuilder: (context, index) {
-                  return SongTile(song: _playerController.filteredSongs[index]);
-                },
-              );
-            }),
-          ),
-          SelectedSongTile(),
-        ],
-      ),
-      bottomNavigationBar: Obx(() {
-        final searchScreenBannerAd = _adController.searchScreenBannerAd.value;
-        final searchScreenBannerAdLoaded =
-            _adController.searchScreenBannerAdLoaded.value;
-        if (searchScreenBannerAdLoaded && searchScreenBannerAd != null) {
-          return SizedBox(
-            height: 50,
-            child: AdWidget(
-              ad: searchScreenBannerAd,
+        body: Column(
+          children: [
+            Expanded(
+              child: Obx(() {
+                return ListView.builder(
+                  itemCount: _playerController.filteredSongs.length,
+                  itemBuilder: (context, index) {
+                    return SongTile(
+                        song: _playerController.filteredSongs[index]);
+                  },
+                );
+              }),
             ),
-          );
-        }
-        return const SizedBox();
-      }),
+            SelectedSongTile(),
+          ],
+        ),
+        bottomNavigationBar: Obx(() {
+          final searchScreenBannerAd = _adController.searchScreenBannerAd.value;
+          final searchScreenBannerAdLoaded =
+              _adController.searchScreenBannerAdLoaded.value;
+          if (searchScreenBannerAdLoaded && searchScreenBannerAd != null) {
+            return SizedBox(
+              height: 50,
+              child: AdWidget(
+                ad: searchScreenBannerAd,
+              ),
+            );
+          }
+          return const SizedBox();
+        }),
+      ),
     );
   }
 }

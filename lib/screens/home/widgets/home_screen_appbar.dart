@@ -13,26 +13,32 @@ class HomeScreenAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: const Text('Music Player'),
       titleTextStyle: AppTypography.medium18,
-      leading: IconButton(
-        onPressed: () {
-          Get.to(
-            SettingsScreen(),
-            transition: Transition.downToUp,
-            duration: const Duration(microseconds: 500),
-          );
-        },
-        icon: const Icon(Icons.menu),
-      ),
-      actions: [
-        IconButton(
+      leading: Semantics(
+        label: 'Menu',
+        child: IconButton(
           onPressed: () {
             Get.to(
-              SearchScreen(),
+              SettingsScreen(),
               transition: Transition.downToUp,
               duration: const Duration(microseconds: 500),
             );
           },
-          icon: const Icon(Icons.search),
+          icon: const Icon(Icons.menu),
+        ),
+      ),
+      actions: [
+        Semantics(
+          label: 'Search',
+          child: IconButton(
+            onPressed: () {
+              Get.to(
+                SearchScreen(),
+                transition: Transition.downToUp,
+                duration: const Duration(microseconds: 500),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
         ),
         const Gap(5),
       ],

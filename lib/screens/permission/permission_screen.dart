@@ -18,137 +18,143 @@ class PermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_appController.appName),
-        titleTextStyle: AppTypography.medium18,
-        leading: IconButton(
-          onPressed: () {
-            Get.to(
-              SettingsScreen(),
-              transition: Transition.downToUp,
-              duration: const Duration(microseconds: 500),
+    return Semantics(
+      label: 'Permissions',
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_appController.appName),
+          titleTextStyle: AppTypography.medium18,
+          leading: IconButton(
+            onPressed: () {
+              Get.to(
+                SettingsScreen(),
+                transition: Transition.downToUp,
+                duration: const Duration(microseconds: 500),
+              );
+            },
+            icon: const Icon(Icons.menu),
+          ),
+        ),
+        body: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${_appController.appName} uses these permissions',
+                textAlign: TextAlign.center,
+                style: AppTypography.medium24,
+              ),
+              const Gap(20),
+              Text(
+                'Required Permissions',
+                style: AppTypography.light13,
+              ),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width: 55,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.music_note_outlined,
+                    color: AppColors.white,
+                  ),
+                ),
+                title: Text(
+                  'Music and audio',
+                  style: AppTypography.light15,
+                ),
+                subtitle: Text(
+                  'Used to play audio files stored on your phone',
+                  style: AppTypography.extraLight13,
+                ),
+              ),
+              const Gap(20),
+              Text(
+                'Features',
+                style: AppTypography.light13,
+              ),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width: 55,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.rocket_launch,
+                    color: AppColors.white,
+                  ),
+                ),
+                title: Text(
+                  'Play your on tracks',
+                  style: AppTypography.light15,
+                ),
+                subtitle: Text(
+                  'Listen to MP3s and other audio files on your phone.',
+                  style: AppTypography.extraLight13,
+                ),
+              ),
+              const Gap(5),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width: 55,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.color_lens_outlined,
+                    color: AppColors.white,
+                    size: 28,
+                  ),
+                ),
+                title: Text(
+                  'Theme',
+                  style: AppTypography.light15,
+                ),
+                subtitle: Text(
+                  'Choose your favourite theme.',
+                  style: AppTypography.extraLight13,
+                ),
+              ),
+              const Spacer(),
+              Semantics(
+                label: 'Allow',
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _playerController.permissionsRequest,
+                    child: const Text('Allow'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Obx(() {
+          final permissionScreenBannerAd =
+              _adController.permissionScreenBannerAd.value;
+          final permissionScreenBannerAdLoaded =
+              _adController.permissionScreenBannerAdLoaded.value;
+          if (permissionScreenBannerAdLoaded &&
+              permissionScreenBannerAd != null) {
+            return SizedBox(
+              height: 50,
+              child: AdWidget(
+                ad: permissionScreenBannerAd,
+              ),
             );
-          },
-          icon: const Icon(Icons.menu),
-        ),
+          }
+          return const SizedBox();
+        }),
       ),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${_appController.appName} uses these permissions',
-              textAlign: TextAlign.center,
-              style: AppTypography.medium24,
-            ),
-            const Gap(20),
-            Text(
-              'Required Permissions',
-              style: AppTypography.light13,
-            ),
-            ListTile(
-              leading: Container(
-                height: 55,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.music_note_outlined,
-                  color: AppColors.white,
-                ),
-              ),
-              title: Text(
-                'Music and audio',
-                style: AppTypography.light15,
-              ),
-              subtitle: Text(
-                'Used to play audio files stored on your phone',
-                style: AppTypography.extraLight13,
-              ),
-            ),
-            const Gap(20),
-            Text(
-              'Features',
-              style: AppTypography.light13,
-            ),
-            ListTile(
-              leading: Container(
-                height: 55,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.rocket_launch,
-                  color: AppColors.white,
-                ),
-              ),
-              title: Text(
-                'Play your on tracks',
-                style: AppTypography.light15,
-              ),
-              subtitle: Text(
-                'Listen to MP3s and other audio files on your phone.',
-                style: AppTypography.extraLight13,
-              ),
-            ),
-            const Gap(5),
-            ListTile(
-              leading: Container(
-                height: 55,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.color_lens_outlined,
-                  color: AppColors.white,
-                  size: 28,
-                ),
-              ),
-              title: Text(
-                'Theme',
-                style: AppTypography.light15,
-              ),
-              subtitle: Text(
-                'Choose your favourite theme.',
-                style: AppTypography.extraLight13,
-              ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _playerController.permissionsRequest,
-                child: const Text('Allow'),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Obx(() {
-        final permissionScreenBannerAd =
-            _adController.permissionScreenBannerAd.value;
-        final permissionScreenBannerAdLoaded =
-            _adController.permissionScreenBannerAdLoaded.value;
-        if (permissionScreenBannerAdLoaded &&
-            permissionScreenBannerAd != null) {
-          return SizedBox(
-            height: 50,
-            child: AdWidget(
-              ad: permissionScreenBannerAd,
-            ),
-          );
-        }
-        return const SizedBox();
-      }),
     );
   }
 }
