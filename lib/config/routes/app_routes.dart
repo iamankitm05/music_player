@@ -1,5 +1,6 @@
 enum AppRoutes {
-  home(name: 'home', path: '/');
+  home(name: 'home', path: '/'),
+  settings(name: 'settings', path: '/settings');
 
   final String name;
   final String path;
