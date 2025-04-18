@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/config/routes/app_router.dart';
+import 'package:music_player/config/theme/app_themes.dart';
+import 'package:music_player/core/utils/di_injector.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  await initDependencies();
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp.router(
+      title: '',
+      debugShowCheckedModeBanner: false,
+      darkTheme: AppThemes.dark,
+      themeMode: ThemeMode.dark,
+      routerConfig: getIt<AppRouter>().router,
     );
   }
 }
