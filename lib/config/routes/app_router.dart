@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:music_player/config/routes/app_routes.dart';
-import 'package:music_player/presentation/home/home_screen.dart';
-import 'package:music_player/presentation/settings/settings_screen.dart';
+import 'package:music_player/screens/home/home_screen.dart';
+import 'package:music_player/screens/settings/settings_screen.dart';
 
 class AppRouter {
   late final GoRouter _router;

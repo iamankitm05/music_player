@@ -9,7 +9,9 @@ abstract final class AppColors {
   static const blue = Colors.blue;
   static const deepPurple = Colors.deepPurple;
   static const deepOrange = Colors.deepOrange;
+  static const indigo = Colors.indigo;
   static const red = Colors.red;
+  static const pink = Colors.pink;
   static const amber = Colors.amber;
   static const green = Colors.green;
 }
