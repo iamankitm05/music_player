@@ -1,27 +1,27 @@
 name: music_player
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.1.0
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.8.1
 
 dependencies:
   flutter:
     sdk: flutter
-  equatable: ^2.0.7
-  go_router: ^15.0.0
-  flutter_bloc: ^9.1.0
-  get_it: ^8.0.3
+  flutter_riverpod: ^2.6.1
   gap: ^3.0.1
-  audio_video_progress_bar: ^2.0.3
+  riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  flutter_launcher_icons: ^0.14.3
+  riverpod_generator: ^2.6.5
+  build_runner: ^2.5.4
+  freezed: ^3.1.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
@@ -34,4 +34,5 @@ flutter_launcher_icons:
   ios: false
   image_path: "assets/icon.png"
   adaptive_icon_foreground: "assets/icon.png"
-  adaptive_icon_background: "#0c0c0c"
+  adaptive_icon_background: "#1b1c1e"
+  

@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:music_player/config/routes/app_router.dart';
-import 'package:music_player/config/theme/app_themes.dart';
-import 'package:music_player/config/theme/cubit/theme_cubit.dart';
-import 'package:music_player/core/utils/di_injector.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:music_player/screens/home/home_screen.dart';
+import 'package:music_player/utils/app_strings.dart';
+import 'package:music_player/utils/provider_logger.dart';
 
-void main() async {
-  await initDependencies();
-  runApp(const MyApp());
+void main() {
+  runApp(ProviderScope(observers: [ProviderLogger()], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeState>(
-      bloc: getIt(),
-      builder: (context, state) {
-        return MaterialApp.router(
-          title: 'Todo List',
-          debugShowCheckedModeBanner: false,
-          theme: AppThemes.light(state.primaryColor),
-          darkTheme: AppThemes.dark(state.primaryColor),
-          themeMode: state.themeMode,
-          routerConfig: getIt<AppRouter>().router,
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp(
+      title: AppStrings.musicPlayer,
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
     );
   }
 }

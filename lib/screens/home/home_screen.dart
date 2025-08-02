@@ -1,33 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
-import 'package:music_player/config/routes/app_routes.dart';
-import 'package:music_player/core/constants/app_images.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:music_player/utils/app_strings.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            CircleAvatar(backgroundImage: AssetImage(AppImages.iconPng)),
-            Gap(12),
-            Expanded(child: Text('ToDo List')),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.pushNamed(AppRoutes.settings.name);
-            },
-            icon: Icon(Icons.settings),
-          ),
-          Gap(6),
-        ],
-      ),
+      appBar: AppBar(title: Text(AppStrings.musicPlayer)),
+      body: Center(child: Text('Home')),
     );
   }
 }
