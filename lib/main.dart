@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:music_player/providers/permissions_provider.dart';
 import 'package:music_player/screens/home/home_screen.dart';
+import 'package:music_player/screens/permissions/permissions_screen.dart';
+import 'package:music_player/theme/app_theme_color_provider.dart';
+import 'package:music_player/theme/app_theme_extension.dart';
 import 'package:music_player/utils/app_strings.dart';
 import 'package:music_player/utils/provider_logger.dart';
 
@@ -13,10 +17,16 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appThemeColor = ref.watch(appThemeColorProvider);
+    final hasPermission = ref.watch(permissionsProvider).value ?? false;
+
     return MaterialApp(
       title: AppStrings.musicPlayer,
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      themeMode: ThemeMode.system,
+      theme: appThemeColor.getThemeData(Brightness.light),
+      darkTheme: appThemeColor.getThemeData(Brightness.dark),
+      home: hasPermission ? HomeScreen() : PermissionsScreen(),
     );
   }
 }

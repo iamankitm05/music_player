@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.music_player.music_player.music_player"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

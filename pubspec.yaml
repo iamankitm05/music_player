@@ -13,6 +13,13 @@ dependencies:
   gap: ^3.0.1
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3
+  freezed_annotation: ^3.1.0
+  # on_audio_query: ^2.9.0
+  on_audio_query:
+    git:
+      url: https://github.com/rozpo/on_audio_query
+      ref: 0d78299
+      path: packages/on_audio_query
 
 dev_dependencies:
   flutter_test:
