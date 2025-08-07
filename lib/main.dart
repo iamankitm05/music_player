@@ -7,6 +7,7 @@ import 'package:music_player/theme/app_theme_color_provider.dart';
 import 'package:music_player/theme/app_theme_extension.dart';
 import 'package:music_player/utils/app_strings.dart';
 import 'package:music_player/utils/provider_logger.dart';
+import 'package:toastification/toastification.dart';
 
 void main() {
   runApp(ProviderScope(observers: [ProviderLogger()], child: const MyApp()));
@@ -20,13 +21,15 @@ class MyApp extends ConsumerWidget {
     final appThemeColor = ref.watch(appThemeColorProvider);
     final hasPermission = ref.watch(permissionsProvider).value ?? false;
 
-    return MaterialApp(
-      title: AppStrings.musicPlayer,
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: appThemeColor.getThemeData(Brightness.light),
-      darkTheme: appThemeColor.getThemeData(Brightness.dark),
-      home: hasPermission ? HomeScreen() : PermissionsScreen(),
+    return ToastificationWrapper(
+      child: MaterialApp(
+        title: AppStrings.musicPlayer,
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.system,
+        theme: appThemeColor.getThemeData(Brightness.light),
+        darkTheme: appThemeColor.getThemeData(Brightness.dark),
+        home: hasPermission ? HomeScreen() : PermissionsScreen(),
+      ),
     );
   }
 }

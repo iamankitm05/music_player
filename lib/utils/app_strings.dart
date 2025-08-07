@@ -13,4 +13,13 @@ abstract final class AppStrings {
   static const theme = 'Theme';
   static const allow = 'Allow';
   static const chooseYourFavoriteTheme = 'Choose your favorite theme.';
+  static const failedToCreatePlaylistTryAgain =
+      'Failed to create playlist, Try again!';
+  static const playlistCreatedSuccessfully = 'Playlist created successfully.';
+  static const cancel = 'Cancel';
+  static const create = 'Create';
+  static const createPlaylist = 'Create Playlist';
+  static const pleaseEnterAValidPlaylistName =
+      'Please enter a valid Playlist name.';
+  static const enterPlaylistName = 'Enter Playlist name';
 }
