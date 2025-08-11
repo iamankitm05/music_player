@@ -4,4 +4,5 @@ abstract final class AppColors {
   static const white = Colors.white;
   static const black = Colors.black;
   static const deepPurple = Colors.deepPurple;
+  static const red = Colors.red;
 }

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_player/providers/playlists_provider.dart';
 import 'package:music_player/utils/app_strings.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class PlaylistFormDialog extends ConsumerStatefulWidget {
-  const PlaylistFormDialog({super.key});
+  const PlaylistFormDialog({super.key, this.playlist});
+
+  final PlaylistModel? playlist;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -18,7 +21,11 @@ class _PlaylistFormDialogState extends ConsumerState<PlaylistFormDialog> {
       key: form,
       child: AlertDialog(
         insetPadding: EdgeInsets.all(16),
-        title: Text(AppStrings.createPlaylist),
+        title: Text(
+          widget.playlist == null
+              ? AppStrings.createPlaylist
+              : AppStrings.renamePlaylist,
+        ),
         content: SizedBox(
           width: 500,
           child: TextFormField(
@@ -37,7 +44,12 @@ class _PlaylistFormDialogState extends ConsumerState<PlaylistFormDialog> {
             onPressed: () => Navigator.pop(context),
             child: Text(AppStrings.cancel),
           ),
-          ElevatedButton(onPressed: _onCreate, child: Text(AppStrings.create)),
+          ElevatedButton(
+            onPressed: _onCreate,
+            child: Text(
+              widget.playlist == null ? AppStrings.create : AppStrings.rename,
+            ),
+          ),
         ],
       ),
     );
@@ -53,9 +65,17 @@ class _PlaylistFormDialogState extends ConsumerState<PlaylistFormDialog> {
   }
 
   void _onCreate() {
-    ref
-        .read(playlistsProvider.notifier)
-        .createPlaylist(playlistName.text.trim());
+    if (!(form.currentState?.validate() ?? false)) return;
+
+    if (widget.playlist == null) {
+      ref
+          .read(playlistsProvider.notifier)
+          .createPlaylist(playlistName.text.trim());
+    } else {
+      ref
+          .read(playlistsProvider.notifier)
+          .renamePlaylist(widget.playlist!.id, playlistName.text.trim());
+    }
     Navigator.pop(context);
   }
 }

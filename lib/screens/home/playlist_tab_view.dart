@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_player/providers/playlists_provider.dart';
 import 'package:music_player/utils/app_strings.dart';
-import 'package:music_player/widgets/musical_note.dart';
 import 'package:music_player/widgets/playlist_form_dialog.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:music_player/widgets/playlist_tile.dart';
 
 class PlaylistTabView extends ConsumerWidget {
   const PlaylistTabView({super.key});
@@ -58,18 +57,7 @@ class PlaylistTabView extends ConsumerWidget {
             sliver: SliverList.builder(
               itemCount: playlists.length,
               itemBuilder: (context, index) {
-                final playlist = playlists[index];
-
-                return ListTile(
-                  onTap: () {},
-                  leading: QueryArtworkWidget(
-                    id: playlist.id,
-                    type: ArtworkType.PLAYLIST,
-                    nullArtworkWidget: MusicalNote(),
-                  ),
-                  title: Text(playlist.playlist),
-                  subtitle: Text('${playlist.numOfSongs} Songs'),
-                );
+                return PlaylistTile(playlists[index]);
               },
             ),
           ),

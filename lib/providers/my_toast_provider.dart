@@ -4,7 +4,7 @@ import 'package:music_player/utils/my_toast.dart';
 
 part 'my_toast_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 MyToast myToast(Ref ref) {
   return MyToast();
 }

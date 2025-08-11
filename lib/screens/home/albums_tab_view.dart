@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_player/providers/albums_provider.dart';
+import 'package:music_player/utils/app_strings.dart';
 import 'package:music_player/widgets/musical_note.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -36,7 +37,7 @@ class AlbumsTabView extends ConsumerWidget {
               nullArtworkWidget: MusicalNote(),
             ),
             title: Text(album.album),
-            subtitle: Text('${album.numOfSongs} Songs'),
+            subtitle: Text(AppStrings.nSongs(album.numOfSongs)),
           );
         },
       ),

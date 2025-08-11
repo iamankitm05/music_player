@@ -36,10 +36,10 @@ class HomeScreen extends ConsumerWidget {
               child: TabBar(
                 labelColor: AppColors.white,
                 tabs: [
-                  Tab(text: 'All'),
-                  Tab(text: 'Artists'),
-                  Tab(text: 'Albums'),
-                  Tab(text: 'Playlist'),
+                  Tab(text: AppStrings.all),
+                  Tab(text: AppStrings.artists),
+                  Tab(text: AppStrings.albums),
+                  Tab(text: AppStrings.playlist),
                 ],
               ),
             ),
@@ -85,9 +85,9 @@ class HomeScreen extends ConsumerWidget {
 
   List<PopupMenuEntry> _itemBuilder(BuildContext context) {
     return [
-      PopupMenuItem(child: Text('Theme')),
-      PopupMenuItem(child: Text('About App')),
-      PopupMenuItem(child: Text('Privacy Policy')),
+      PopupMenuItem(child: Text(AppStrings.theme)),
+      PopupMenuItem(child: Text(AppStrings.aboutApp)),
+      PopupMenuItem(child: Text(AppStrings.privacyPolicy)),
     ];
   }
 }

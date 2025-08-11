@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'albums_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Albums extends _$Albums {
   @override
   FutureOr<List<AlbumModel>> build() async {

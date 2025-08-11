@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_player/providers/artists_provider.dart';
+import 'package:music_player/utils/app_strings.dart';
 import 'package:music_player/widgets/musical_note.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -37,7 +38,10 @@ class ArtistsTabView extends ConsumerWidget {
             ),
             title: Text(artist.artist),
             subtitle: Text(
-              '${artist.numberOfAlbums ?? 0} Album ${artist.numberOfTracks} Tracks',
+              AppStrings.xAlbumYTracks(
+                artist.numberOfAlbums ?? 0,
+                artist.numberOfTracks ?? 0,
+              ),
             ),
           );
         },

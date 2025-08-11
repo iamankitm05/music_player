@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'artists_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Artists extends _$Artists {
   @override
   FutureOr<List<ArtistModel>> build() async {

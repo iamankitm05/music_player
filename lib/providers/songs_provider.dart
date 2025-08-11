@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'songs_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Songs extends _$Songs {
   @override
   FutureOr<List<SongModel>> build() async {

@@ -32,7 +32,6 @@ class AllSongsTabView extends ConsumerWidget {
             onTap: () {},
             contentPadding: EdgeInsets.only(left: 16, right: 6),
             leading: QueryArtworkWidget(
-              // controller: _audioQuery,
               id: song.id,
               type: ArtworkType.AUDIO,
               nullArtworkWidget: MusicalNote(),

@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'playlists_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class Playlists extends _$Playlists {
   @override
   FutureOr<List<PlaylistModel>> build() async {
@@ -20,29 +20,45 @@ class Playlists extends _$Playlists {
     try {
       final isPlaylistCreated = await audioQuery.createPlaylist(name);
       if (isPlaylistCreated) {
-        myToast.showSuccess(AppStrings.playlistCreatedSuccessfully);
         final _ = ref.refresh(playlistsProvider.notifier);
-      } else {
-        throw Exception();
+        return;
       }
+      throw Exception();
     } catch (e) {
-      myToast.showError(AppStrings.failedToCreatePlaylistTryAgain);
+      myToast.showError(AppStrings.errorEncounteredPleaseTryAgain);
     }
   }
 
-  void deletePlaylist(int playlistId) async {
+  void renamePlaylist(int playlistId, String newName) async {
+    final audioQuery = ref.read(audioQueryProvider);
+    final myToast = ref.read(myToastProvider);
+    try {
+      final isPlaylistRenamed = await audioQuery.renamePlaylist(
+        playlistId,
+        newName,
+      );
+      if (isPlaylistRenamed) {
+        final _ = ref.refresh(playlistsProvider.notifier);
+        return;
+      }
+      throw Exception();
+    } catch (e) {
+      myToast.showError(AppStrings.errorEncounteredPleaseTryAgain);
+    }
+  }
+
+  void removePlaylist(int playlistId) async {
     final audioQuery = ref.read(audioQueryProvider);
     final myToast = ref.read(myToastProvider);
     try {
       final isPlaylistRemoved = await audioQuery.removePlaylist(playlistId);
       if (isPlaylistRemoved) {
-        myToast.showSuccess(AppStrings.playlistCreatedSuccessfully);
         final _ = ref.refresh(playlistsProvider.notifier);
-      } else {
-        throw Exception();
+        return;
       }
+      throw Exception();
     } catch (e) {
-      myToast.showError(AppStrings.failedToCreatePlaylistTryAgain);
+      myToast.showError(AppStrings.errorEncounteredPleaseTryAgain);
     }
   }
 }
