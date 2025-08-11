@@ -7,6 +7,7 @@ import 'package:music_player/screens/home/playlist_tab_view.dart';
 import 'package:music_player/screens/search/search_screen.dart';
 import 'package:music_player/theme/app_colors.dart';
 import 'package:music_player/utils/app_strings.dart';
+import 'package:music_player/widgets/color_plate_dialog.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -85,9 +86,22 @@ class HomeScreen extends ConsumerWidget {
 
   List<PopupMenuEntry> _itemBuilder(BuildContext context) {
     return [
-      PopupMenuItem(child: Text(AppStrings.theme)),
-      PopupMenuItem(child: Text(AppStrings.aboutApp)),
-      PopupMenuItem(child: Text(AppStrings.privacyPolicy)),
+      PopupMenuItem(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => ColorPlateDialog(),
+          );
+        },
+        child: Text(AppStrings.theme),
+      ),
+      PopupMenuItem(
+        onTap: () {
+          showAboutDialog(context: context);
+        },
+        child: Text(AppStrings.aboutApp),
+      ),
+      // PopupMenuItem(onTap: () {}, child: Text(AppStrings.privacyPolicy)),
     ];
   }
 }

@@ -5,4 +5,6 @@ abstract final class AppColors {
   static const black = Colors.black;
   static const deepPurple = Colors.deepPurple;
   static const red = Colors.red;
+
+  static List<Color> get colors => Colors.primaries;
 }

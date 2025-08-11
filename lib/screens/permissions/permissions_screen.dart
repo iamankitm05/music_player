@@ -4,15 +4,13 @@ import 'package:gap/gap.dart';
 import 'package:music_player/providers/permissions_provider.dart';
 import 'package:music_player/theme/app_colors.dart';
 import 'package:music_player/utils/app_strings.dart';
+import 'package:music_player/widgets/color_plate_dialog.dart';
 
 class PermissionsScreen extends ConsumerWidget {
   const PermissionsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final permissionAsyncValue = ref.watch(permissionsProvider);
-    final isLoading = permissionAsyncValue.isLoading;
-
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -104,7 +102,12 @@ class PermissionsScreen extends ConsumerWidget {
             ),
             const Spacer(),
             OutlinedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => ColorPlateDialog(),
+                );
+              },
               label: const Text(AppStrings.theme),
               icon: Icon(Icons.color_lens),
             ),
@@ -113,9 +116,7 @@ class PermissionsScreen extends ConsumerWidget {
               onPressed: () {
                 ref.read(permissionsProvider.notifier).requestPermissions();
               },
-              child: isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text(AppStrings.allow),
+              child: const Text(AppStrings.allow),
             ),
           ],
         ),

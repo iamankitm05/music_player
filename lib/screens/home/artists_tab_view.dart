@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:music_player/providers/artists_provider.dart';
+import 'package:music_player/screens/filtered_songs/filtered_songs_screen.dart';
 import 'package:music_player/utils/app_strings.dart';
 import 'package:music_player/widgets/musical_note.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -30,7 +31,13 @@ class ArtistsTabView extends ConsumerWidget {
           final artist = artists[index];
 
           return ListTile(
-            onTap: () {},
+            onTap: () {
+              FilteredSongsScreen.navigate(
+                context: context,
+                type: AudiosFromType.ARTIST_ID,
+                where: artist.id.toString(),
+              );
+            },
             leading: QueryArtworkWidget(
               id: artist.id,
               type: ArtworkType.ARTIST,
