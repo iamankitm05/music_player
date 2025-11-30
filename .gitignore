@@ -1,7 +1,3 @@
-# Freezed & Riverpod Cached
-*.g.dart
-*.freezed.dart
-
 # FVM Version Cache
 .fvm/
 .fvmrc

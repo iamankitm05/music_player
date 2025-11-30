@@ -1,107 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:music_player/screens/home/albums_tab_view.dart';
-import 'package:music_player/screens/home/all_songs_tab_view.dart';
-import 'package:music_player/screens/home/artists_tab_view.dart';
-import 'package:music_player/screens/home/playlist_tab_view.dart';
-import 'package:music_player/screens/search/search_screen.dart';
-import 'package:music_player/theme/app_colors.dart';
-import 'package:music_player/utils/app_strings.dart';
-import 'package:music_player/widgets/color_plate_dialog.dart';
+import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:music_player/controllers/ad_controller.dart';
+import 'package:music_player/controllers/player_controller.dart';
+import 'package:music_player/screens/home/widgets/home_screen_appbar.dart';
+import 'package:music_player/screens/home/widgets/selected_song_tile.dart';
+import 'package:music_player/screens/home/widgets/song_tile.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+
+  final _playerController = Get.find<PlayerController>();
+  final _adController = Get.find<AdController>();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final primaryColor = Theme.of(context).primaryColor;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppStrings.musicPlayer),
-        actions: [
-          IconButton(
-            onPressed: () {
-              SearchScreen.navigate(context);
-            },
-            icon: Icon(Icons.search),
-          ),
-          PopupMenuButton(itemBuilder: _itemBuilder),
-        ],
-      ),
-      body: DefaultTabController(
-        length: 4,
-        child: Column(
-          children: [
-            ColoredBox(
-              color: primaryColor,
-              child: TabBar(
-                labelColor: AppColors.white,
-                tabs: [
-                  Tab(text: AppStrings.all),
-                  Tab(text: AppStrings.artists),
-                  Tab(text: AppStrings.albums),
-                  Tab(text: AppStrings.playlist),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: TabBarView(
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: 'Home Screen',
+      child: Scaffold(
+        appBar: const HomeScreenAppbar(),
+        body: Obx(
+          () {
+            if (_playerController.isSongsLoading.value) {
+              return Center(
+                child: LoadingAnimationWidget.fourRotatingDots(
+                  size: 36,
+                  color: Theme.of(context).primaryColor,
+                ),
+              );
+            }
+      
+            return RefreshIndicator(
+              onRefresh: _playerController.getSongs,
+              child: Column(
                 children: [
-                  AllSongsTabView(),
-                  ArtistsTabView(),
-                  AlbumsTabView(),
-                  PlaylistTabView(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _playerController.songs.length,
+                      itemBuilder: (context, index) =>
+                          SongTile(song: _playerController.songs[index]),
+                    ),
+                  ),
+                  SelectedSongTile(),
                 ],
               ),
-            ),
-          ],
+            );
+          },
         ),
-      ),
-
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.only(left: 16),
-            tileColor: primaryColor,
-            leading: Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.white),
-                shape: BoxShape.circle,
+        bottomNavigationBar: Obx(() {
+          final homeScreenBannerAd = _adController.homeScreenBannerAd.value;
+          final homeScreenBannerAdLoaded =
+              _adController.homeScreenBannerAdLoaded.value;
+          if (homeScreenBannerAdLoaded && homeScreenBannerAd != null) {
+            return SizedBox(
+              height: 50,
+              child: AdWidget(
+                ad: homeScreenBannerAd,
               ),
-              child: Icon(Icons.music_note),
-            ),
-            title: Text('Song #1'),
-            subtitle: Text('Unknown'),
-            trailing: IconButton(onPressed: () {}, icon: Icon(Icons.pause)),
-          ),
-          Container(color: Colors.amber, width: double.infinity, height: 50),
-        ],
+            );
+          }
+          return const SizedBox();
+        }),
       ),
     );
-  }
-
-  List<PopupMenuEntry> _itemBuilder(BuildContext context) {
-    return [
-      PopupMenuItem(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => ColorPlateDialog(),
-          );
-        },
-        child: Text(AppStrings.theme),
-      ),
-      PopupMenuItem(
-        onTap: () {
-          showAboutDialog(context: context);
-        },
-        child: Text(AppStrings.aboutApp),
-      ),
-      // PopupMenuItem(onTap: () {}, child: Text(AppStrings.privacyPolicy)),
-    ];
   }
 }
