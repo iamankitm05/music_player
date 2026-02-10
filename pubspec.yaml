@@ -7,11 +7,14 @@ environment:
   sdk: ^3.10.8
 
 dependencies:
-  equatable: ^2.0.8
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  equatable: ^2.0.8
   get_it: ^9.2.0
+  photo_manager: ^3.8.3
+  just_audio: ^0.10.5
+  google_fonts: ^8.0.1
 
 dev_dependencies:
   flutter_test:
@@ -20,3 +23,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/

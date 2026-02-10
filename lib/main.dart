@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/constants/app_colors.dart';
+import 'package:music_player/constants/app_themes.dart';
+import 'package:music_player/screens/home_screen.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'Music Player',
+      theme: AppThemes.generateTheme(Brightness.light, AppColors.indigoAccent),
+      darkTheme: AppThemes.generateTheme(
+        Brightness.dark,
+        AppColors.indigoAccent,
       ),
+      themeMode: ThemeMode.system,
+      home: HomeScreen(),
     );
   }
 }
