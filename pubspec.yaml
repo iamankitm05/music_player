@@ -1,48 +1,22 @@
 name: music_player
-description: "Simple yet powerful Music Player, exclusively designed for playing system audio files. Enjoy smooth playback, customizable playlists, and effortless file management for your favorite tunes."
-
-publish_to: 'none' 
-
-version: 2.0.0+3
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ^3.10.8
 
 dependencies:
+  equatable: ^2.0.8
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
-  google_fonts: ^6.2.1
-  get: ^4.6.6
-  get_storage: ^2.1.1
-  gap: ^3.0.1
-  package_info_plus: ^9.0.0
-  flutter_colorpicker: ^1.1.0
-  on_audio_query: ^2.9.0
-  audio_video_progress_bar: ^2.0.2
-  just_audio: ^0.10.5
-  loading_animation_widget: ^1.2.1
-  rxdart: ^0.28.0
-  google_mobile_ads: ^6.0.0
-  connectivity_plus: ^7.0.0
+  flutter_bloc: ^9.1.1
+  get_it: ^9.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - "assets/images/music-player-logo.png"
-
-flutter_launcher_icons:
-  android: true
-  ios: true
-  remove_alpha_ios: true
-  image_path: "assets/images/music-player-logo.png"
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_background_dark: "#000000"
-  adaptive_icon_foreground: "assets/images/music-player-logo.png"
