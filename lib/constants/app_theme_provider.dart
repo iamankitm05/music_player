@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:music_player/constants/app_colors.dart';
 
-abstract final class AppThemes {
+abstract final class AppThemeProvider {
   static ThemeData generateTheme(Brightness brightness, Color primaryColor) {
     final isDark = brightness == Brightness.dark;
-    final theme = isDark ? ThemeData.dark() : ThemeData.light();
-    final poppinsTextTheme = GoogleFonts.poppinsTextTheme(theme.textTheme);
 
     return ThemeData(
       primaryColor: primaryColor,
@@ -15,14 +12,15 @@ abstract final class AppThemes {
         brightness: brightness,
         primary: primaryColor,
         onPrimary: AppColors.white,
+        secondary: AppColors.grey.shade300,
       ),
+      popupMenuTheme: PopupMenuThemeData(position: PopupMenuPosition.under),
       appBarTheme: AppBarTheme(
         backgroundColor: primaryColor,
+        surfaceTintColor: primaryColor,
         foregroundColor: AppColors.white,
       ),
       scaffoldBackgroundColor: isDark ? AppColors.black : AppColors.white,
-      textTheme: poppinsTextTheme,
-      primaryTextTheme: poppinsTextTheme,
     );
   }
 }
