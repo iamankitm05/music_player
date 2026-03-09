@@ -1,33 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/constants/app_colors.dart';
-import 'package:music_player/constants/app_theme_provider.dart';
-import 'package:music_player/screens/home_screen.dart';
-import 'package:music_player/utils/di_injector.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:music_player/constants/app_themes.dart';
+import 'package:music_player/controllers/ad_controller.dart';
+import 'package:music_player/controllers/app_controller.dart';
+import 'package:music_player/controllers/player_controller.dart';
+import 'package:music_player/screens/home/home_screen.dart';
+import 'package:music_player/screens/permission/permission_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DiInjector.init();
-  runApp(const MyApp());
+  await GetStorage.init();
+  Get.put(GetStorage());
+  final appController = Get.put(AppController());
+  await appController.init();
+  final playerController = Get.put(PlayerController());
+  await playerController.init();
+  Get.put(AdController());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _appController = Get.find<AppController>();
+  final _playerController = Get.find<PlayerController>();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Music Player',
-      debugShowCheckedModeBanner: false,
-      theme: AppThemeProvider.generateTheme(
-        Brightness.light,
-        AppColors.indigoAccent,
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Music Player',
+        theme: AppThemes.lightTheme(_appController.primaryColor.value),
+        darkTheme: AppThemes.darkTheme(_appController.primaryColor.value),
+        themeMode: _appController.getThemeMode(),
+        home: _playerController.permissionsStatus.value
+            ? HomeScreen()
+            : PermissionScreen(),
       ),
-      darkTheme: AppThemeProvider.generateTheme(
-        Brightness.dark,
-        AppColors.indigoAccent,
-      ),
-      themeMode: ThemeMode.system,
-      home: HomeScreen(),
     );
   }
 }
